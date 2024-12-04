@@ -60,6 +60,8 @@ constexpr size_t kAndroidOpenGLTlsSlot = 3;
 constexpr size_t kAndroidOpenGLTlsSlot = 3;
 #    elif defined(__riscv)
 constexpr int kAndroidOpenGLTlsSlot = -5;
+#    elif defined(__loongarch64)
+constexpr int kAndroidOpenGLTlsSlot = -5;
 #    else
 #        error Unsupported platform.
 #    endif
@@ -117,6 +119,13 @@ constexpr int kAndroidOpenGLTlsSlot = -5;
                 void **__val;                       \
                 __asm__("mv %0, tp" : "=r"(__val)); \
                 __val;                              \
+            })
+#    elif defined(__loongarch__)
+#        define ANGLE_ANDROID_GET_GL_TLS()             \
+            ({                                         \
+                void **__val;                          \
+                __asm__("move %0, $tp" : "=r"(__val)); \
+                __val;                                 \
             })
 #    else
 #        error unsupported architecture
